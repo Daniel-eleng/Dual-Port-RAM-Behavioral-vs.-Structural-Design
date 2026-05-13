@@ -31,8 +31,8 @@ This project focuses on the implementation and comparison of two different archi
 2. **Simulation:** Run a Functional Simulation (`Run Simulation`).
 4. **Verification:** Check the Tcl Console. If both modules return identical values for the same addresses, the equivalence test is successful.
 
-![Wave forms](/RAM/results/waveform.png)
-![Tcl Console](/RAM/results/Tcl_Console.png)
+![Wave forms](./RAM/results/waveform.png)
+![Tcl Console](./RAM/results/Tcl_Console.png)
 
 ## Final Notes
 * **Why Dual-Port?** This structure is essential for FIFO buffers, where a producer writes data and a consumer reads it concurrently.
