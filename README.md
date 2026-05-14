@@ -1,39 +1,32 @@
-# Dual-Port RAM: Behavioral vs. Structural Design
+# Digital Circuits Design & Verification Portfolio
 
 ## Project Overview
-This project focuses on the implementation and comparison of two different architectures for a **Simple Dual-Port RAM (8x8 bits)** using Verilog. The objective is to analyze how synthesis tools interpret high-level behavioral descriptions versus structural logic, while establishing a robust storage core for a future FIFO (First-In, First-Out) buffer.
+
+This repository presents the design of a Simple Dual-Port RAM(including classic design implementation and design using a decoder), which serves as the core storage element for creating a fully functional Synchronous FIFO.
 
 ## Features
 
-### Verilog Design
-* **Dual-Port Architecture:** Features independent addresses for writing (`w_addr`) and reading (`rd_addr`), enabling simultaneous access to different memory locations.
-* **Classic/Behavioral Mode:** Utilizes a Verilog register array (`reg [7:0] RAM [0:7]`), which is the optimal method for memory inference in FPGA synthesis.
-* **Decoder/Structural Mode:** Manually implements location selection using explicit `case` logic (mimicking hardware decoders/multiplexers).
-* **Asynchronous Reset:** All memory locations are initialized to `0` whenever the `rst` signal is asserted.
+### 1. RAM 
+* **Behavioral vs. Structural:** Explores and compares two different Verilog design paradigms for an 8x8 bits Dual-Port RAM.
+* **Simultaneous Access:** Features independent read and write ports, establishing the essential storage core for sequential buffering systems.
+* **Equivalence Checking:** Utilizes a unified "Back-to-Back" testbench to prove functional equivalence between the two memory architectures.
 
-### Back-to-Back Testbench
-* **Equivalence Checking:** Instantiates both modules simultaneously to compare their outputs in real-time under identical stimuli.
-* **Synchronous Stimuli:** Inputs are applied on the falling edge of the clock (`negedge clk`) to guarantee signal stability during sampling on the rising edge.
-* **Console Logging:** Uses `$display` tasks to generate a clear execution report in the Tcl Console, formatted for easy debugging.
+### 2. Synchronous FIFO Circular Buffer
+* **Circular Architecture:** Implements a First-In, First-Out (FIFO) buffer using dual pointers (read and write) that wrap around seamlessly.
+* **Status Flag Logic:** Accurately generates `full` and `empty` status signals by intentionally reserving one memory slot to prevent pointer overlap ambiguity.
+* **Event-Driven Verification:** Features an automated testbench that reacts dynamically to hardware flags (using `wait` statements) rather than fixed time delays.
 
 ## Project Structure
 
-| Folder/File | Description |
-| :---------- | :---------- |
-| `src/Classic_RAM8_8.v` | Behavioral implementation using a register array. |
-| `src/Decoder_RAM8_8.v` | Structural implementation using `case` logic. |
-| `sim/General_RAM_tb.v` | Unified testbench for "Back-to-Back" comparison. |
-| `results/` | Contains Waveform screenshots and Tcl Console logs. |
+| Folder | Description |
+| :----- | :---------- |
+| `RAM/` | Contains the RTL design (`RAM_design`), testbench (`RAM_tb`), and simulation results.
+| `FIFO/` | Contains the RTL design (`FIFO_design`), testbench (`FIFO_tb`), and simulation results.
+| `README.md` | This main index file. |
 
 ## How to Run:
 
-1. **Setup:** Add the three `.v` files to a new project in Vivado.
-2. **Simulation:** Run a Functional Simulation (`Run Simulation`).
-4. **Verification:** Check the Tcl Console. If both modules return identical values for the same addresses, the equivalence test is successful.
-
-![Wave forms](RAM/results/waveform.png)
-![Tcl Console](RAM/results/Console.png)
-
-## Final Notes
-* **Why Dual-Port?** This structure is essential for FIFO buffers, where a producer writes data and a consumer reads it concurrently.
-* **Stability:** Driving signals on the `negedge clk` in the testbench eliminates race conditions in the simulator, ensuring setup and hold time compliance.
+1. **Navigation:** Choose the desired project folder (`RAM` or `FIFO`).
+2. **Setup:** Open Xilinx Vivado, create a new project, and import the `.v` files from the respective `_design` and `_tb` subfolders.
+3. **Simulation:** Run a Functional Simulation (`Run Simulation`).
+4. **Verification:** Consult the specific `README.md` inside each project folder for detailed explanations of the architecture, expected Waveforms, and Tcl Console outputs.

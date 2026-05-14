@@ -38,11 +38,11 @@ module FIFO8_8(input clk, rst, wr_en, rd_en,
             rd_ptr <= 0;
             end        
         end
-        else if(wr_en && full == 0) begin
+        else if(wr_en && !full) begin
             mem[wr_ptr] <= data_in;
             wr_ptr <= wr_ptr + 1'b1;
         end
-        else if(rd_en && empty == 0) begin
+        else if(rd_en && !empty) begin
             data_out <= mem[rd_ptr];
             rd_ptr <= rd_ptr + 1'b1;
         end
